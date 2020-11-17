@@ -2,6 +2,7 @@
 #include <cmath>
 #include <yaml-cpp/yaml.h>
 
+#include <boost/format.hpp>
 grasping_point::grasping_point()
 {
     base_left = Eigen::Isometry3d::Identity();
@@ -31,10 +32,11 @@ grasping_point::grasping_point()
     t_7e.push_back(T_normal_R);  // panda_top
 
 }
-void grasping_point::loadConfig(std::string file_name)
+void grasping_point::loadConfig(const std::string &file_name)
 {
     YAML::Node yamlnode;
-    yamlnode = YAML::LoadFile("/home/jiyeong/catkin_ws/src/2_social/closed_chain_motion_planner/config/" + file_name + ".yaml");
+    std::cout << file_name << std::endl;
+    yamlnode = YAML::LoadFile((boost::format("/home/jiyeong/catkin_ws/src/2_social/closed_chain_motion_planner/config/%1%.yaml") % file_name).str());
     Eigen::Vector3d t_wo_start_pos(yamlnode["t_wo_start_pos"].as<std::vector<double>>().data());
     Eigen::Vector4d t_wo_start_quat(yamlnode["t_wo_start_quat"].as<std::vector<double>>().data());
     Eigen::QuaternionMapd qq(t_wo_start_quat.data());

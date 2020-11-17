@@ -133,8 +133,8 @@ if __name__ == '__main__':
         obj_info = SceneObject()
         rospy.sleep(1)
 
-        mdp.plan_cartesian_target([0.45, 0.11, 1.40], [0.5, -0.5, 0.5, 0.5], "left")
-        mdp.plan_cartesian_target([0.45, -0.10, 1.32], [-0.5, 0.5, 0.5, 0.5], "right")
+        mdp.plan_cartesian_target([0.45, 0.0, 1.47], [-0.7071, 0.7071, 0, 0], "left")
+        mdp.plan_cartesian_target([0.45, -0.10, 1.28], [-0.5, 0.5, 0.5, 0.5], "right")
 
         mdp.scene.add_mesh(
             obj_info.obj_name, obj_info.pose, obj_info.mesh_dir)

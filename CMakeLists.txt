@@ -30,7 +30,7 @@ find_package(PythonLibs 2.7 REQUIRED)
 
 find_package(PCL 1.8 REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(RBDL REQUIRED)
+# find_package(RBDL REQUIRED)
 # find_package(Boost COMPONENTS program_options REQUIRED system)
 find_package(ompl REQUIRED)
 find_package(fcl REQUIRED)
@@ -63,7 +63,7 @@ include_directories(
     /usr/include/eigen3 
     /usr/include/boost 
     /usr/local/include/ompl
-    ${RBDL_INCLUDE_DIRS}
+    # ${RBDL_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${OMPL_INCLUDE_DIRS}
     ${PCL_INCLUDE_DIRS}

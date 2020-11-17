@@ -84,7 +84,7 @@ void KinematicChainValidityChecker::attachObject(const std::string &object_id, c
     // while (true)
     //     scene_pub_.publish(scene_msg);
     // std::vector<std::string> collision_list{"panda_left_rightfinger", "panda_left_leftfinger", "panda_top_finger_left_link", "panda_top_finger_right_link", "panda_top_hand"};
-    std::vector<std::string> collision_list{"panda_left_rightfinger", "panda_left_leftfinger"};
+    std::vector<std::string> collision_list{"panda_left_rightfinger", "panda_left_leftfinger", "panda_right_finger_left_link", "panda_right_finger_right_link"};
     for (auto link : collision_list)
     {
         acm_->setEntry(object_id, link, true);

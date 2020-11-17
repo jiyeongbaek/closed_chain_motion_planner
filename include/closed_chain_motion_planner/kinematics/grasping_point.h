@@ -12,7 +12,7 @@ class grasping_point
 {
 public:
     grasping_point();
-    void loadConfig(std::string file_name = "stefan");
+    void loadConfig(const std::string &file_name = "dumbbell");
     Isometry3d base_left, base_right, base_top;
     VectorXd start, goal;
     Isometry3d t_wo_start, t_wo_goal;
