@@ -27,8 +27,8 @@ ConstrainedProblem::ConstrainedProblem(ob::StateSpacePtr space_, ChainConstraint
   KinematicChainValidityCheckerPtr valid_checker_ = std::make_shared<KinematicChainValidityChecker>(csi);
   valid_checker_->setArmNames(arm_names_);
   valid_checker_->setStartStates(config->start);
-  valid_checker_->addMeshFromFile(config->mesh_file_, mesh_pose, "stefan");
-  valid_checker_->attachObject("stefan", "panda_left_hand", "hand_left");
+  valid_checker_->addMeshFromFile(config->mesh_file_, mesh_pose, config->obj_name);
+  valid_checker_->attachObject(config->obj_name, "panda_left_hand", "hand_left");
 
   ss->setStateValidityChecker(valid_checker_);
 
@@ -216,7 +216,7 @@ void ConstrainedProblem::solveOnce(bool goalsampling)
     OMPL_INFORM("Interpolating path...");
     path.interpolate();
 
-    OMPL_INFORM("Dumping path to `%s_path.txt`.", config->debug_file_prefix_.c_str());
+    OMPL_INFORM("Dumping path to `%s_path.txt`.", config->obj_name.c_str());
     std::ofstream pathfile(config->debug_file_prefix_ + config->obj_name + "_path.txt");
     path.printAsMatrix(pathfile);
     pathfile.close();

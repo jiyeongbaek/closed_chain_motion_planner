@@ -4,24 +4,24 @@
   <key id="key1" for="edge" attr.name="weight" attr.type="double" />
   <graph id="G" edgedefault="directed" parse.nodeids="free" parse.edgeids="canonical" parse.order="nodesfirst">
     <node id="n0">
-      <data key="key0">-0.00146429,-0.542056,0.00775454,-2.76,-0.0138028,2.23056,0.763176,-0.00620713,-0.368923,-0.00460323,-2.6123,-0.00177847,2.24772,0.79478</data>
+      <data key="key0">-1.91355,-1.52733,1.53622,-2.53107,-0.1218,2.90166,2.38747,0.0747979,0.184825,0.130857,-2.39671,1.71489,1.7145,1.33481</data>
     </node>
     <node id="n1">
-      <data key="key0">-0.197263,-0.205849,-0.493124,-2.43545,-0.155415,2.28379,0.131561,0.181358,-0.0858892,0.437656,-2.30298,0.0408696,2.23733,1.41677</data>
+      <data key="key0">-1.81482,-1.47967,1.57204,-1.95599,-0.120115,2.25384,2.33414,0.296826,0.692886,0.243589,-1.59402,1.75182,2.05906,1.57412</data>
     </node>
     <node id="n2">
-      <data key="key0">-0.21113,-0.618865,-0.430801,-2.6621,-0.23984,2.05919,0.17276,0.0377225,-0.101006,0.278571,-2.2393,-0.0565595,2.14388,1.07623</data>
+      <data key="key0">-1.36499,-1.64591,1.23478,-2.72997,-0.255222,2.60219,2.18839,0.26941,-0.201998,0.347041,-2.39618,1.83847,2.13041,1.67135</data>
     </node>
-    <edge id="e0" source="n1" target="n2">
+    <edge id="e0" source="n0" target="n2">
       <data key="key1">1</data>
     </edge>
-    <edge id="e1" source="n2" target="n1">
+    <edge id="e1" source="n2" target="n0">
       <data key="key1">1</data>
     </edge>
-    <edge id="e2" source="n0" target="n2">
+    <edge id="e2" source="n1" target="n2">
       <data key="key1">1</data>
     </edge>
-    <edge id="e3" source="n2" target="n0">
+    <edge id="e3" source="n2" target="n1">
       <data key="key1">1</data>
     </edge>
   </graph>

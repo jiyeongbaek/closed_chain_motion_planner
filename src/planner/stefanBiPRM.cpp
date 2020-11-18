@@ -1,7 +1,7 @@
 
 #include <closed_chain_motion_planner/planner/stefanBiPRM.h>
 
-#include <closed_chain_motion_planner/base/jy_ProjectedStateSpace.h>
+#include <closed_chain_motion_planner/base/constraints/jy_ProjectedStateSpace.h>
 #include <ompl/base/goals/GoalSampleableRegion.h>
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 #include <ompl/datastructures/PDF.h>

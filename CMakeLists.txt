@@ -74,7 +74,7 @@ add_definitions(${PCL_DEFINITIONS})
 link_directories(${Boost_LIBRARY_DIR})
 
 set(SOURCES
-  src/base/jy_ProjectedStateSpace.cpp
+  src/base/constraints/jy_ProjectedStateSpace.cpp
   src/base/constraints/ConstrainedPlanningCommon.cpp
   src/base/constraints/ik_task.cpp
   src/base/jy_GoalLazySamples.cpp
@@ -82,7 +82,7 @@ set(SOURCES
   src/planner/stefanBiPRM.cpp
   src/kinematics/panda_tracik.cpp
   src/kinematics/panda_rbdl.cpp
-  src/kinematics/grasping_point.cpp
+  src/kinematics/planner_config.cpp
   src/kinematics/KinematicChain.cpp
   )
 

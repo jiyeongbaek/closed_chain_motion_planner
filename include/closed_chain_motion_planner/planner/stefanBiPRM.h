@@ -15,7 +15,7 @@
 #include <ompl/base/spaces/SE3StateSpace.h>
 #include <ompl/base/ConstrainedSpaceInformation.h>
 #include <closed_chain_motion_planner/kinematics/KinematicChain.h>
-#include <closed_chain_motion_planner/base/jy_ConstrainedValidStateSampler.h>
+#include <closed_chain_motion_planner/base/constraints/jy_ConstrainedValidStateSampler.h>
 #include <closed_chain_motion_planner/base/stefan_planning/stefanFCL.h>
 #include <closed_chain_motion_planner/base/utils.h>
 #include <ompl/base/goals/GoalState.h>

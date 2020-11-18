@@ -11,15 +11,16 @@
 #include <closed_chain_motion_planner/kinematics/panda_tracik.h>
 #include <closed_chain_motion_planner/kinematics/panda_model.h>
 #include <closed_chain_motion_planner/base/constraints/ConstraintFunction.h>
-#include <closed_chain_motion_planner/base/jy_ConstrainedValidStateSampler.h>
+#include <closed_chain_motion_planner/base/constraints/jy_ConstrainedValidStateSampler.h>
 #include <closed_chain_motion_planner/base/jy_GoalLazySamples.h>
 #include <closed_chain_motion_planner/planner/stefanBiPRM.h>
 #include <ompl/geometric/planners/rrt/RRTConnect.h>
 #include <ompl/geometric/planners/rrt/RRT.h>
+#include <ompl/geometric/planners/prm/PRM.h>
 #include <closed_chain_motion_planner/base/utils.h>
 
-#include <closed_chain_motion_planner/base/jy_ProjectedStateSpace.h>
-#include <closed_chain_motion_planner/kinematics/grasping_point.h>
+#include <closed_chain_motion_planner/base/constraints/jy_ProjectedStateSpace.h>
+#include <closed_chain_motion_planner/kinematics/planner_config.h>
 
 #include <ompl/base/ConstrainedSpaceInformation.h>
 #include <ompl/base/spaces/SE3StateSpace.h>
@@ -38,7 +39,8 @@ enum PLANNER_TYPE
 {
     RRT,
     RRTConnect,
-    StefanBiPRM
+    StefanBiPRM,
+    PRM
 };
 
 struct ConstrainedOptions
@@ -56,7 +58,6 @@ class ConstrainedProblem
 {
 public:
     ConstrainedProblem(ob::StateSpacePtr space_, ChainConstraintPtr constraint_, ConfigPtr config_);
-    grasping_point grp;
     ConfigPtr config;
     void setConstrainedOptions();
     void setStartState();
@@ -65,7 +66,7 @@ public:
     void solveOnce(bool goalsampling = false);
     // void setConfig(ConfigPtr &config)
     // {
-    //     config_ = std::make_shared<grasping_point>();
+    //     config_ = std::make_shared<planner_config>();
     //     std::cout << "SET CONFIGGGGGGGGGGG" << std::endl;
     //     config_ = config;
     // }
@@ -97,13 +98,6 @@ public:
     std::shared_ptr<_T> createPlanner()
     {
         auto &&planner = std::make_shared<_T>(csi);
-        return std::move(planner);
-    }
-
-    template <typename _T>
-    std::shared_ptr<_T> createPlanner2()
-    {
-        auto &&planner = std::make_shared<_T>(csi, tsi, grp, obj_start_, obj_goal_);
         return std::move(planner);
     }
 
@@ -151,6 +145,9 @@ public:
                 break;
             case StefanBiPRM:
                 p = createPlanner3<stefanBiPRM>();
+                break;            
+            case PRM:
+                p = createPlanner<og::PRM>();
                 break;
         }
         return p;

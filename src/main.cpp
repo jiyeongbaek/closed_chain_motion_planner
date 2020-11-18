@@ -28,10 +28,10 @@ int main(int argc, char **argv)
 {
     std::string name_ = "triple_constraint_planning";
     ros::init(argc, argv, name_);
-    ros::AsyncSpinner spinner(1);
-    spinner.start();
+    // ros::AsyncSpinner spinner(1);
+    // spinner.start();
     ros::NodeHandle node_handle("~");
-    std::string obj_name; // = "dumbbell";
+    std::string obj_name;
     node_handle.getParam("obj_name", obj_name);
     std::cout << obj_name << std::endl;
     ros::WallDuration(1.0).sleep();
@@ -39,12 +39,13 @@ int main(int argc, char **argv)
     int links = 14;
     auto ss = std::make_shared<KinematicChainSpace>(links);
     auto constraint = std::make_shared<KinematicChainConstraint>(links);
-    ConfigPtr config = std::make_shared<grasping_point>();
+    ConfigPtr config = std::make_shared<planner_config>();
     config->loadConfig(obj_name);
     ConstrainedProblem cp(ss, constraint, config);
     
     cp.setPlanner(StefanBiPRM);
     // cp.setPlanner(RRTConnect);
+    // cp.setPlanner(PRM);
     bool goalRegion = false;
     if (!goalRegion)
     {

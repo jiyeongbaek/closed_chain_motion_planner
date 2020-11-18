@@ -84,7 +84,7 @@ void KinematicChainValidityChecker::attachObject(const std::string &object_id, c
     // while (true)
     //     scene_pub_.publish(scene_msg);
     // std::vector<std::string> collision_list{"panda_left_rightfinger", "panda_left_leftfinger", "panda_top_finger_left_link", "panda_top_finger_right_link", "panda_top_hand"};
-    std::vector<std::string> collision_list{"panda_left_rightfinger", "panda_left_leftfinger", "panda_right_finger_left_link", "panda_right_finger_right_link"};
+    std::vector<std::string> collision_list{"panda_left_rightfinger", "panda_left_leftfinger", "panda_right_finger_left_link", "panda_right_finger_right_link",  "panda_top_finger_left_link", "panda_top_finger_right_link", "panda_top_hand"};
     for (auto link : collision_list)
     {
         acm_->setEntry(object_id, link, true);
@@ -102,7 +102,7 @@ bool KinematicChainValidityChecker::isValidImpl(const Eigen::Ref<const Eigen::Ve
 {
     collision_detection::CollisionRequest req;
     collision_detection::CollisionResult res;
-    // req.verbose = true;
+    req.verbose = true;
     // req.max_contacts = 100;
     {
         robot_state::RobotState robot_state = planning_scene->getCurrentState();

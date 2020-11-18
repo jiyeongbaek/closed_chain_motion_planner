@@ -1,7 +1,7 @@
-#include <closed_chain_motion_planner/kinematics/grasping_point.h>
+#include <closed_chain_motion_planner/kinematics/planner_config.h>
 #include <cmath>
 
-grasping_point::grasping_point()
+planner_config::planner_config()
 {
     base_left = Eigen::Isometry3d::Identity();
     base_right = Eigen::Isometry3d::Identity();
@@ -42,5 +42,5 @@ grasping_point::grasping_point()
     t_wo_goal.linear() = Quaterniond(-0.10912217, -0.03777281, -0.004149, 0.99330174).toRotationMatrix();
 
     debug_file_prefix_ = "/home/jiyeong/catkin_ws/src/2_social/closed_chain_motion_planner/debug/";
-    mesh_file_ = "package://grasping_point/STEFAN/stl/assembly_without_bottom.stl";
+    mesh_file_ = "package://planner_config/STEFAN/stl/assembly_without_bottom.stl";
 }
