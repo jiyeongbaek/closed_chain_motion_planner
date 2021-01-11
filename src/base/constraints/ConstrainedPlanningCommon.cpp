@@ -1,5 +1,7 @@
 #include <closed_chain_motion_planner/base/constraints/ConstrainedPlanningCommon.h>
 #include <geometry_msgs/Point.h>
+
+#include <ompl/tools/benchmark/Benchmark.h>
 using namespace std;
 using namespace Eigen;
 ConstrainedProblem::ConstrainedProblem(ob::StateSpacePtr space_, ChainConstraintPtr constraint_, ConfigPtr config_)
@@ -115,13 +117,13 @@ void ConstrainedProblem::_setEnvironment(const std::map<std::string, int> &arm_n
          Valid step size for manifold traversal with delta*/
 void ConstrainedProblem::setConstrainedOptions()
 {
-  c_opt.delta = 0.25;
+  c_opt.delta = 0.15; // 0.25
   c_opt.lambda = 2.0;
   c_opt.tolerance1 = 0.001; //0.002
   c_opt.tolerance2 = 0.005; // 0.025
   c_opt.time = 180.;
   c_opt.tries = 1000;
-  c_opt.range = 0.1;
+  c_opt.range = 1.0;
 
   constraint->setArmModels(arm_models_[arm_names_[0]], arm_models_[arm_names_[1]]);
   constraint->setInitialPosition(config->start);
@@ -158,6 +160,27 @@ void ConstrainedProblem::goalSampling()
     goals->addState(goal_state);
     csi->printState(goal_state);
   }
+
+}
+
+void ConstrainedProblem::benchmarkGoalSampling()
+{
+  Eigen::Isometry3d base_obj = config->t_wo_goal; ///StateEigenUtils::StateToIsometry(obj_goal_);
+  // ss->setup();
+  ob::State *goal_state = csi->allocState();
+  bool suc = false;
+  do
+  {
+    suc = valid_sampler_->sampleCalibGoal(base_obj, goal_state);
+  }while (!suc);
+
+  csi->printState(goal_state);
+  
+  Eigen::Map<Eigen::VectorXd> &sol = *goal_state->as<ob::ConstrainedStateSpace::StateType>();       
+  ob::ScopedState<> sgoal(css);
+  sgoal->as<ob::ConstrainedStateSpace::StateType>()->copy(sol);  
+  ss->setGoalState(sgoal);
+  
 }
 bool ConstrainedProblem::goalSampling(const ob::jy_GoalLazySamples *gls, ob::State *result)
 {
@@ -176,7 +199,7 @@ bool ConstrainedProblem::goalSampling(const ob::jy_GoalLazySamples *gls, ob::Sta
       csi->printState(result);
   }
   
-  return cont && gls->maxSampleCount() < 3;
+  return cont && gls->maxSampleCount() < 20;
 }
 
 void ConstrainedProblem::solveOnce(bool goalsampling)
@@ -204,6 +227,7 @@ void ConstrainedProblem::solveOnce(bool goalsampling)
     ss->setGoal(goals);
   }
 
+  ss->setup();
   ob::PlannerStatus stat = ss->solve(c_opt.time);
   if (stat)
   {
@@ -227,5 +251,5 @@ void ConstrainedProblem::solveOnce(bool goalsampling)
     OMPL_WARN("No solution found.");
   OMPL_INFORM("Sove once finished.");
   
-  if (goalsampling) goalregion->stopSampling();
+  // if (goalsampling) goalregion->stopSampling();
 }

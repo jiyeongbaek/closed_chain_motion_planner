@@ -17,6 +17,8 @@
 #include <ompl/geometric/planners/rrt/RRTConnect.h>
 #include <ompl/geometric/planners/rrt/RRT.h>
 #include <ompl/geometric/planners/prm/PRM.h>
+
+#include <ompl/geometric/planners/kpiece/KPIECE1.h>
 #include <closed_chain_motion_planner/base/utils.h>
 
 #include <closed_chain_motion_planner/base/constraints/jy_ProjectedStateSpace.h>
@@ -40,7 +42,8 @@ enum PLANNER_TYPE
     RRT,
     RRTConnect,
     StefanBiPRM,
-    PRM
+    PRM,
+    KPIECE
 };
 
 struct ConstrainedOptions
@@ -102,12 +105,26 @@ public:
     }
 
     template <typename _T>
+    std::shared_ptr<_T> createPlannerIntermediate()
+    {
+        auto &&planner = std::make_shared<_T>(csi, true);
+        return std::move(planner);
+    }
+
+    template <typename _T>
     std::shared_ptr<_T> createPlanner3()
     {
         auto &&planner = std::make_shared<_T>(csi, tsi, obj_start_, obj_goal_, valid_sampler_);
         return std::move(planner);
     }
-
+    
+    template <typename _T>
+    std::shared_ptr<_T> createPlannerRange(bool /*intermediate*/)
+    {
+        auto &&planner = createPlannerIntermediate<_T>();
+        planner->setRange(c_opt.range);
+        return std::move(planner);
+    }
     template <typename _T>
     std::shared_ptr<_T> createPlannerRange()
     {
@@ -132,6 +149,7 @@ public:
 
         return std::move(planner);
     }
+
     ob::PlannerPtr getPlanner(enum PLANNER_TYPE planner, const std::string &projection = "")
     {
         ob::PlannerPtr p;
@@ -149,6 +167,10 @@ public:
             case PRM:
                 p = createPlanner<og::PRM>();
                 break;
+            
+            case KPIECE:
+                p = createPlannerRangeProj<og::KPIECE1>(projection);
+                break;
         }
         return p;
     }
@@ -159,6 +181,40 @@ public:
         ss->setPlanner(pp);
     }
     void _setEnvironment(const std::map<std::string, int> & arm_name_map);
+
+
+    void setupBenchmark(std::vector<enum PLANNER_TYPE> &planners, const std::string &problem)
+    {
+        bench = new ot::Benchmark(*ss, problem);
+
+        bench->addExperimentParameter("n", "INTEGER", std::to_string(constraint->getAmbientDimension()));
+        bench->addExperimentParameter("k", "INTEGER", std::to_string(constraint->getManifoldDimension()));
+        bench->addExperimentParameter("n - k", "INTEGER", std::to_string(constraint->getCoDimension()));
+
+        request = ot::Benchmark::Request(c_opt.time, 4096, 10, 0.1, true, false, true);
+
+        for (auto planner : planners)
+            bench->addPlanner(getPlanner(planner, problem));
+
+        bench->setPreRunEvent([&](const ob::PlannerPtr &planner) {
+            planner->getSpaceInformation()->getStateSpace()->as<ompl::base::ConstrainedStateSpace>()->clear();
+            planner->clear();
+        });
+    }
+
+    void runBenchmark()
+    {
+        bench->benchmark(request);
+
+        auto now(ompl::time::as_string(ompl::time::now()));
+        const std::string filename =
+            (boost::format("%1%_%2%_benchmark.log") % now % bench->getExperimentName()).str();
+
+        bench->saveResultsToFile(filename.c_str());
+    }
+    void benchmarkGoalSampling();
+
+
     ob::StateSpacePtr space;
     ChainConstraintPtr constraint;
     
@@ -180,6 +236,8 @@ public:
     std::map<std::string, ArmModelPtr> arm_models_;
     jy_ValidStateSamplerPtr valid_sampler_;
 
+    ot::Benchmark *bench;
+    ot::Benchmark::Request request;
 protected:
     ompl::RNG rng_;
 };

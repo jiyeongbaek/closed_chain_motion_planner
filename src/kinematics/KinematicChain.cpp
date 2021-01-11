@@ -30,6 +30,14 @@ KinematicChainValidityChecker::KinematicChainValidityChecker(const ompl::base::S
     box_pose.orientation.w = 1.0;
     addBox(Eigen::Vector3d(0.65, 1.0, 0.2), box_pose, "sub_table");
 
+
+    geometry_msgs::Pose obstacle;
+    obstacle.position.x = 0.65;
+    obstacle.position.y = 0.1;
+    obstacle.position.z = 1.3;
+    obstacle.orientation.w = 1.0;
+    addBox(Eigen::Vector3d(0.5, 0.08, 0.1), obstacle, "obstacle");
+    
     scene_pub_ = nh_.advertise<moveit_msgs::PlanningScene>("/planning_scenes_suhan", 1);
 }
 
@@ -102,7 +110,7 @@ bool KinematicChainValidityChecker::isValidImpl(const Eigen::Ref<const Eigen::Ve
 {
     collision_detection::CollisionRequest req;
     collision_detection::CollisionResult res;
-    req.verbose = true;
+    // req.verbose = true;
     // req.max_contacts = 100;
     {
         robot_state::RobotState robot_state = planning_scene->getCurrentState();

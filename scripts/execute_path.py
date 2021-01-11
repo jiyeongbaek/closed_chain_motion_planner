@@ -152,5 +152,5 @@ if __name__ == '__main__':
         mdp.scene.add_mesh(obj_info.obj_name, obj_info.pose, obj_info.mesh_dir)
         rospy.sleep(2)
         mdp.scene.attach_mesh("panda_left_link8", obj_info.obj_name, touch_links=touch_links)
-        rospy.sleep(3)
+        rospy.sleep(1)
         mdp.group_123.execute(robot_trajectory)

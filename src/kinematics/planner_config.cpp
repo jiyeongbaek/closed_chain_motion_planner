@@ -37,7 +37,7 @@ void planner_config::loadConfig(const std::string &file_name)
     YAML::Node yamlnode;
     std::cout << file_name << std::endl;
     yamlnode = YAML::LoadFile((boost::format("/home/jiyeong/catkin_ws/src/2_social/closed_chain_motion_planner/config/%1%.yaml") % file_name).str());
-
+    // yamlnode = YAML::LoadFile("/home/jiyeong/catkin_ws/src/2_social/closed_chain_motion_planner/config/Basket.yaml");
     Eigen::Vector3d t_wo_start_pos(yamlnode["t_wo_start_pos"].as<std::vector<double>>().data());
     Eigen::Vector4d t_wo_start_quat(yamlnode["t_wo_start_quat"].as<std::vector<double>>().data());
     Eigen::QuaternionMapd qq(t_wo_start_quat.data());

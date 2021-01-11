@@ -26,7 +26,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    std::string name_ = "triple_constraint_planning";
+    std::string name_ = "constraint_planning";
     ros::init(argc, argv, name_);
     // ros::AsyncSpinner spinner(1);
     // spinner.start();
@@ -43,10 +43,13 @@ int main(int argc, char **argv)
     config->loadConfig(obj_name);
     ConstrainedProblem cp(ss, constraint, config);
     
-    cp.setPlanner(StefanBiPRM);
-    // cp.setPlanner(RRTConnect);
+    cp.setStartState();
+    // cp.setPlanner(StefanBiPRM);
     // cp.setPlanner(PRM);
-    bool goalRegion = false;
+    cp.setPlanner(RRTConnect);
+    // cp.setPlanner(PRM);
+    // cp.setPlanner(KPIECE);
+    bool goalRegion = true;
     if (!goalRegion)
     {
         while (true)
@@ -59,6 +62,15 @@ int main(int argc, char **argv)
 
     OMPL_INFORM("*START* threading");
     cp.solveOnce(goalRegion);
+    
+    // cp.setStartState();
+    // std::cout << "dd" << std::endl;
+    // std::vector<enum PLANNER_TYPE> planners = {RRT, RRTConnect, PRM, StefanBiPRM};
+    // cp.benchmarkGoalSampling();
+    // std::cout << "dd3" << std::endl;
+    // cp.setupBenchmark(planners, "kinematic");
+    // cp.runBenchmark();  
 
     return 0;
 }
+

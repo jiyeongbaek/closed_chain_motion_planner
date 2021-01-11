@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/jiyeong/catkin_ws/devel/include",
+                "/opt/ros/melodic/include",
+                "/home/jiyeong/catkin_ws/src/3_constraint_planning/closed_chain_motion_planner/include",
+                "/usr/include",
+                "/usr/include/eigen3",
+                "${workspaceFolder}/include",
+                "/opt/ros/melodic/include/ompl-1.4",
+                "/usr/include/pcl-1.8",
+                "/usr/include/vtk-6.3"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
